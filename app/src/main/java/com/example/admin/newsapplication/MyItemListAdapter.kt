@@ -38,7 +38,10 @@ class MyItemListAdapter(private val articleList: ArrayList<Model.Article>):
 
         fun bindArticle(article: Model.Article) {
             this.article = article
+
             view.tvTitle.text = article.title
+            view.tvSource.text = article.source.name
+            view.tvAuthor.text = article.author
         }
 
         override fun onClick(p0: View?) {
