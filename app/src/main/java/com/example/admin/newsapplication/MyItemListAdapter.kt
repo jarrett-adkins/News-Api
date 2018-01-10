@@ -45,9 +45,9 @@ class MyItemListAdapter(private val articleList: ArrayList<Model.Article>):
         }
 
         override fun onClick(p0: View?) {
-            Log.d("MyItemListAdapter", "clicked")
+            Log.d("MyItemListAdapter", "clicked on " + article?.title)
 
-//            val context = itemView.context
+            val context = itemView.context
 //            val showPhotoIntent = Intent(context, PhotoActivity::class.java)
 //            showPhotoIntent.putExtra("article", article)
 //            context.startActivity(showPhotoIntent)

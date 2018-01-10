@@ -41,6 +41,9 @@ dependencies {
 
     //card view
     compile 'com.android.support:cardview-v7:26.1.0'
+
+    //permissions
+    compile 'io.vrinda.kotlinpermissions:kotlinpermissions:1.1'
 }
 repositories {
     mavenCentral()

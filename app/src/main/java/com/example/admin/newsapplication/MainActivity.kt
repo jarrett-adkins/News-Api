@@ -1,19 +1,28 @@
 package com.example.admin.newsapplication
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.pm.PackageManager
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import com.example.admin.newsapplication.data.RetrofitHelper
 import com.example.admin.newsapplication.model.Model
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import io.vrinda.kotlinpermissions.PermissionCallBack
+import io.vrinda.kotlinpermissions.PermissionsActivity
 import kotlinx.android.synthetic.main.activity_main.*
 // The Kotlin Android Extensions plugin allows us to import views in a layout as “synthetic” properties.
 
 class MainActivity : AppCompatActivity() {
 
     private val TAG = "MainActivity"
+    val MY_PERMISSIONS_REQUEST_LOCATION = 99
 
     private var articleList: ArrayList<Model.Article> = ArrayList()
     private lateinit var linearLayoutManager: LinearLayoutManager
@@ -26,12 +35,72 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        requestLocationPermission()
+//        initRecycerView()
+//        displayHeadlines()
+    }
+
+    private fun requestLocationPermission() {
+        val permission = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION)
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            Log.i(TAG, "Permission not granted")
+
+//            ActivityCompat.requestPermissions(this,
+//                    arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
+//                    MY_PERMISSIONS_REQUEST_LOCATION)
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                val builder = AlertDialog.Builder(this)
+                builder.setMessage("Permission to access the device's location is required for " +
+                        "this application")
+                        .setTitle("Permission required")
+
+                builder.setPositiveButton("OK"
+                ) { dialog, id ->
+                    Log.i(TAG, "Clicked")
+                    makeRequest()
+                }
+
+                val dialog = builder.create()
+                dialog.show()
+            } else {
+                makeRequest()
+            }
+        } else {
+            Log.i(TAG, "Permission granted")
+            initRecycerView()
+            displayHeadlines()
+        }
+    }
+
+    private fun makeRequest() {
+        ActivityCompat.requestPermissions(this,
+                arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
+                MY_PERMISSIONS_REQUEST_LOCATION)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int,
+                                            permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            MY_PERMISSIONS_REQUEST_LOCATION -> {
+                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    Log.i(TAG, "Permission has been denied by user")
+                } else {
+                    Log.i(TAG, "Permission has been granted by user")
+                    initRecycerView()
+                    displayHeadlines()
+                }
+            }
+        }
+    }
+
+    private fun initRecycerView() {
         linearLayoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = linearLayoutManager
         adapter = MyItemListAdapter(articleList)
         recyclerView.adapter = adapter
-
-        displayHeadlines()
     }
 
     private fun displayHeadlines() {
