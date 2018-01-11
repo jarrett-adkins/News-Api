@@ -10,11 +10,7 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import com.example.admin.newsapplication.R
-import com.example.admin.newsapplication.data.RetrofitHelper
 import com.example.admin.newsapplication.model.Model
-import com.example.admin.newsapplication.viewModel.HeadlineRepository
-import com.example.admin.newsapplication.viewModel.MainViewModel
-import com.example.admin.newsapplication.viewModel.NewsApi
 import com.example.admin.newsapplication.viewModel.ViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -41,32 +37,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        requestLocationPermission()
-    }
-
-    val subscriptions = CompositeDisposable()
-
-    fun subscribe(disposable: Disposable): Disposable {
-        subscriptions.add(disposable)
-        return disposable
-    }
-
-    override fun onStart() {
-        super.onStart()
-        subscribe(viewModel.getHeadlines()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                                        result ->
-                    Log.d("Result", "There are ${result.articles.size} results")
-
-                    for( a in result.articles )
-                        articleList.add(a)
-
-                    // call initRecyclerView, pass articleList
-                }, { error ->
-                    error.printStackTrace()
-                }))
+        requestLocationPermission()
     }
 
     private fun requestLocationPermission() {
@@ -96,7 +67,7 @@ class MainActivity : AppCompatActivity() {
             }
         } else {
             Log.i(TAG, "Permission granted")
-//            viewModel.getHeadLines()
+            initRecyclerView()
         }
     }
 
@@ -114,7 +85,7 @@ class MainActivity : AppCompatActivity() {
                     Log.i(TAG, "Permission has been denied by user")
                 } else {
                     Log.i(TAG, "Permission has been granted by user")
-//                    viewModel.getHeadLines()
+                    initRecyclerView()
                 }
             }
         }
@@ -125,6 +96,28 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = linearLayoutManager
         adapter = MyItemListAdapter(articleList)
         recyclerView.adapter = adapter
+
+        subscribe(viewModel.getHeadlines()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    result ->
+                    Log.d("Result", "There are ${result.articles.size} results")
+
+                    for( a in result.articles )
+                        articleList.add(a)
+
+                    adapter.notifyItemInserted(articleList.size)
+                }, { error ->
+                    error.printStackTrace()
+                }))
+    }
+
+    val subscriptions = CompositeDisposable()
+
+    fun subscribe(disposable: Disposable): Disposable {
+        subscriptions.add(disposable)
+        return disposable
     }
 
     fun initRecyclerView(arList: ArrayList<Model.Article>) {
