@@ -1,11 +1,14 @@
 package com.example.admin.newsapplication.view.mainActivity
 
+import android.content.Intent
+import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import com.example.admin.newsapplication.R
 import com.example.admin.newsapplication.model.Model
+import com.example.admin.newsapplication.view.newsDetailsActivity.NewsDetailActivity
 import kotlinx.android.synthetic.main.list_item.view.*
 import java.util.ArrayList
 
@@ -48,9 +51,9 @@ class MyItemListAdapter(private val articleList: ArrayList<Model.Article>):
             Log.d("MyItemListAdapter", "clicked on " + article?.title)
 
             val context = itemView.context
-//            val showPhotoIntent = Intent(context, PhotoActivity::class.java)
-//            showPhotoIntent.putExtra("article", article)
-//            context.startActivity(showPhotoIntent)
+            val detailsIntent = Intent(context, NewsDetailActivity::class.java)
+            detailsIntent.putExtra("article", article)
+            context.startActivity(detailsIntent)
         }
     }
 

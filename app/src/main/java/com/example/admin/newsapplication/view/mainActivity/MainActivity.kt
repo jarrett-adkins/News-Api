@@ -119,18 +119,6 @@ class MainActivity : AppCompatActivity() {
         subscriptions.add(disposable)
         return disposable
     }
-
-    fun initRecyclerView(arList: ArrayList<Model.Article>) {
-        linearLayoutManager = LinearLayoutManager(this)
-        recyclerView.layoutManager = linearLayoutManager
-        adapter = MyItemListAdapter(articleList)
-        recyclerView.adapter = adapter
-    }
-
-    fun updateArticleList(arList: ArrayList<Model.Article>) {
-        articleList.addAll(arList)
-        adapter.notifyItemInserted(arList.size)
-    }
 }
 
 /*
@@ -149,13 +137,6 @@ X Gson
 - SQLite
 
 [DONE] Architecture:  MVVM
-
-https://medium.com/@manuelvicnt/rxjava-android-mvvm-app-structure-with-retrofit-a5605fa32c00
-Retrofit layer is like my RetrofitHelper interface.
-
-The API service calls the Retrofit Layer and processes the response, returning an
-Observable<ResponseObject>. It does the on subscribe and on error stuff. Seems to cover what the
-displayHeadlines() does.
 
 Due date:  01/11/2018 2:00 PM EST
 
