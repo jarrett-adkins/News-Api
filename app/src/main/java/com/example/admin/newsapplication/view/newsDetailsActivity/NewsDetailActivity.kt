@@ -2,6 +2,9 @@ package com.example.admin.newsapplication.view.newsDetailsActivity
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import com.example.admin.newsapplication.R
 import com.example.admin.newsapplication.model.Model
 import com.example.admin.newsapplication.viewModel.ViewModel
@@ -17,7 +20,6 @@ class NewsDetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_news_detail)
 
         val article = intent.getParcelableExtra<Model.Article>("article")
-//        val article: Model.Article = intent.getSerializableExtra("article") as Model.Article
 
         tvSourceID.text = article.source.id
         tvSourceName.text = article.source.name
@@ -27,5 +29,16 @@ class NewsDetailActivity : AppCompatActivity() {
         tvUrl.text = article.url
         tvPublishedAt.text = article.publishedAt
 
+        var actionBar = supportActionBar
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_details, menu);
+        return true
+    }
+
+    fun buttonClicked(mi: MenuItem) {
+        Log.d(TAG, "Star Clicked")
+        mi.setIcon(R.drawable.ic_star_filled_24dp)
     }
 }

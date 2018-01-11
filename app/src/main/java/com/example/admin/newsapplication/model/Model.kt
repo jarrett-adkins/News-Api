@@ -23,50 +23,18 @@ object Model {
     @Parcelize
     data class Article(
             @SerializedName("source") @Expose val source: Source,
-            @SerializedName("author") @Expose val author: String,
-            @SerializedName("title") @Expose val title: String,
-            @SerializedName("description") @Expose val description: String,
-            @SerializedName("url") @Expose val url: String,
-            @SerializedName("urlToImage") @Expose val urlToImage: String,
-            @SerializedName("publishedAt") @Expose val publishedAt: String
-    ): Parcelable/*: Parcelable {
-        constructor(parcel: Parcel) : this(
-                parcel.readTypedObject(),
-                parcel.readString(),
-                parcel.readString(),
-                parcel.readString(),
-                parcel.readString(),
-                parcel.readString(),
-                parcel.readString())
-
-        override fun writeToParcel(parcel: Parcel, flags: Int) {
-            parcel.writeString(author)
-            parcel.writeString(title)
-            parcel.writeString(description)
-            parcel.writeString(url)
-            parcel.writeString(urlToImage)
-            parcel.writeString(publishedAt)
-        }
-
-        override fun describeContents(): Int {
-            return 0
-        }
-
-        companion object CREATOR : Parcelable.Creator<Article> {
-            override fun createFromParcel(parcel: Parcel): Article {
-                return Article(parcel)
-            }
-
-            override fun newArray(size: Int): Array<Article?> {
-                return arrayOfNulls(size)
-            }
-        }
-    }*/
+            @SerializedName("author") @Expose val author: String?,
+            @SerializedName("title") @Expose val title: String?,
+            @SerializedName("description") @Expose val description: String?,
+            @SerializedName("url") @Expose val url: String?,
+            @SerializedName("urlToImage") @Expose val urlToImage: String?,
+            @SerializedName("publishedAt") @Expose val publishedAt: String?
+    ): Parcelable
 
     @SuppressLint("ParcelCreator")
     @Parcelize
     data class Source(
-            @SerializedName("id") @Expose val id: String,
-            @SerializedName("name") @Expose val name: String
+            @SerializedName("id") @Expose val id: String?,
+            @SerializedName("name") @Expose val name: String?
     ): Parcelable
 }

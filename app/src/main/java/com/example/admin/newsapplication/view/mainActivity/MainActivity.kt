@@ -153,10 +153,10 @@ The first time it loads the home screen it should ask the user for Location perm
 RecyclerView as well, including relevant news information.
 
 News Detail screen:
-It should display the details on the news
+[DONE] It should display the details on the news
 and allow the user to store them in a local SQlite database.
-The ActionBar
-should have a favorite icon
+[DONE] The ActionBar
+[DONE] should have a favorite icon
 that changes color if the news being shown is a saved news article.
 
 Since we are senior developers and professional consultants, we value high quality in code, so make
