@@ -14,12 +14,13 @@ class NewsDetailActivity : AppCompatActivity() {
 
     private val TAG = "NewsDetailActivity"
     private var viewModel = ViewModel()
+    private lateinit var article: Model.Article
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_news_detail)
 
-        val article = intent.getParcelableExtra<Model.Article>("article")
+        article = intent.getParcelableExtra<Model.Article>("article")
 
         tvSourceID.text = article.source.id
         tvSourceName.text = article.source.name
@@ -29,16 +30,31 @@ class NewsDetailActivity : AppCompatActivity() {
         tvUrl.text = article.url
         tvPublishedAt.text = article.publishedAt
 
-        var actionBar = supportActionBar
+        viewModel.initDatabase(this)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_details, menu);
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_details, menu)
         return true
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
+        if(isFavorited(article))
+            menu.findItem(R.id.mFavorite).setIcon(R.drawable.ic_star_filled_24dp)
+        return super.onPrepareOptionsMenu(menu)
+    }
+
+    private fun isFavorited(article: Model.Article): Boolean {
+        return viewModel.isFavorited(article)
     }
 
     fun buttonClicked(mi: MenuItem) {
         Log.d(TAG, "Star Clicked")
-        mi.setIcon(R.drawable.ic_star_filled_24dp)
+
+        //check if it is in the favorites
+        if(!isFavorited(article)) {
+            if(viewModel.addToFavorites(article))
+                mi.setIcon(R.drawable.ic_star_filled_24dp)
+        }
     }
 }

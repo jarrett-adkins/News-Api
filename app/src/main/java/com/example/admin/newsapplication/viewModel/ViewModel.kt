@@ -1,13 +1,31 @@
 package com.example.admin.newsapplication.viewModel
 
-import com.example.admin.newsapplication.data.RetrofitHelper
+import android.content.Context
+import com.example.admin.newsapplication.data.local.DatabaseHelper
+import com.example.admin.newsapplication.data.remote.RetrofitHelper
 import com.example.admin.newsapplication.model.Model
 import io.reactivex.Observable
+import kotlin.properties.Delegates
 
 class ViewModel {
 
+    var dbHelper: DatabaseHelper by Delegates.notNull()
+
     fun getHeadlines(): Observable<Model.Response> {
         return RetrofitHelper.searchTopHeadlines()
+    }
+
+    fun initDatabase(context: Context) {
+        dbHelper = DatabaseHelper(context)
+    }
+
+    fun isFavorited(article: Model.Article): Boolean {
+        return dbHelper.checkIfFavorited(article)
+    }
+
+    fun addToFavorites(article: Model.Article): Boolean {
+        var l = dbHelper.addToFavorites(article)
+        return ( l > -1 )
     }
 }
 

@@ -122,7 +122,7 @@ class MainActivity : AppCompatActivity() {
 }
 
 /*
-There's basically 20 things. Ive done 9.
+There's basically 20 things. Ive done 14.
 
 Create an Android News application using the following libraries:
 X Retrofit
@@ -134,7 +134,7 @@ X Gson
 - Junit (Unit Testing)
 - Mockito (Unit Testing)
 - Espresso (UI Testing)
-- SQLite
+X SQLite
 
 [DONE] Architecture:  MVVM
 
@@ -154,10 +154,10 @@ RecyclerView as well, including relevant news information.
 
 News Detail screen:
 [DONE] It should display the details on the news
-and allow the user to store them in a local SQlite database.
+[DONE] and allow the user to store them in a local SQlite database.
 [DONE] The ActionBar
 [DONE] should have a favorite icon
-that changes color if the news being shown is a saved news article.
+[DONE] that changes color if the news being shown is a saved news article.
 
 Since we are senior developers and professional consultants, we value high quality in code, so make
 sure your code is presentable before any commit is made, and provide at least one Unit Test per

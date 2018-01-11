@@ -1,4 +1,4 @@
-package com.example.admin.newsapplication.data
+package com.example.admin.newsapplication.data.remote
 
 import com.example.admin.newsapplication.model.Model
 import com.example.admin.newsapplication.utils.Constants
