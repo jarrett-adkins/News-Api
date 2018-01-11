@@ -1,10 +1,10 @@
-package com.example.admin.newsapplication
+package com.example.admin.newsapplication.view.mainActivity
 
-import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import com.example.admin.newsapplication.R
 import com.example.admin.newsapplication.model.Model
 import kotlinx.android.synthetic.main.list_item.view.*
 import java.util.ArrayList
@@ -18,12 +18,12 @@ class MyItemListAdapter(private val articleList: ArrayList<Model.Article>):
         return articleList.size
     }
 
-    override fun onBindViewHolder(holder: MyItemListAdapter.MyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val article = articleList[position]
         holder.bindArticle(article)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyItemListAdapter.MyViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val inflatedView = parent.inflate(R.layout.list_item, false)
         return MyViewHolder(inflatedView)
     }

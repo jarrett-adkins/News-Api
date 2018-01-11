@@ -1,4 +1,4 @@
-package com.example.admin.newsapplication
+package com.example.admin.newsapplication.view.mainActivity
 
 import android.support.annotation.LayoutRes
 import android.view.LayoutInflater

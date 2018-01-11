@@ -4,12 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.admin.newsapplication.view.mainActivity.MainActivity">
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </android.support.v7.widget.RecyclerView>
+    tools:context="com.example.admin.newsapplication.view.newsDetailsActivity.NewsDetailActivity">
 
 </android.support.constraint.ConstraintLayout>

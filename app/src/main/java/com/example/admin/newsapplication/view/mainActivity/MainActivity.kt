@@ -1,7 +1,6 @@
-package com.example.admin.newsapplication
+package com.example.admin.newsapplication.view.mainActivity
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -10,19 +9,26 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
+import com.example.admin.newsapplication.R
 import com.example.admin.newsapplication.data.RetrofitHelper
 import com.example.admin.newsapplication.model.Model
+import com.example.admin.newsapplication.viewModel.HeadlineRepository
+import com.example.admin.newsapplication.viewModel.MainViewModel
+import com.example.admin.newsapplication.viewModel.NewsApi
+import com.example.admin.newsapplication.viewModel.ViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import io.vrinda.kotlinpermissions.PermissionCallBack
-import io.vrinda.kotlinpermissions.PermissionsActivity
 import kotlinx.android.synthetic.main.activity_main.*
 // The Kotlin Android Extensions plugin allows us to import views in a layout as “synthetic” properties.
 
 class MainActivity : AppCompatActivity() {
 
     private val TAG = "MainActivity"
-    val MY_PERMISSIONS_REQUEST_LOCATION = 99
+    private val MY_PERMISSIONS_REQUEST_LOCATION = 99
+
+    private var viewModel = ViewModel()
 
     private var articleList: ArrayList<Model.Article> = ArrayList()
     private lateinit var linearLayoutManager: LinearLayoutManager
@@ -35,9 +41,32 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        requestLocationPermission()
-//        initRecycerView()
-//        displayHeadlines()
+//        requestLocationPermission()
+    }
+
+    val subscriptions = CompositeDisposable()
+
+    fun subscribe(disposable: Disposable): Disposable {
+        subscriptions.add(disposable)
+        return disposable
+    }
+
+    override fun onStart() {
+        super.onStart()
+        subscribe(viewModel.getHeadlines()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                                        result ->
+                    Log.d("Result", "There are ${result.articles.size} results")
+
+                    for( a in result.articles )
+                        articleList.add(a)
+
+                    // call initRecyclerView, pass articleList
+                }, { error ->
+                    error.printStackTrace()
+                }))
     }
 
     private fun requestLocationPermission() {
@@ -47,9 +76,6 @@ class MainActivity : AppCompatActivity() {
         if (permission != PackageManager.PERMISSION_GRANTED) {
             Log.i(TAG, "Permission not granted")
 
-//            ActivityCompat.requestPermissions(this,
-//                    arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
-//                    MY_PERMISSIONS_REQUEST_LOCATION)
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.ACCESS_COARSE_LOCATION)) {
                 val builder = AlertDialog.Builder(this)
@@ -70,8 +96,7 @@ class MainActivity : AppCompatActivity() {
             }
         } else {
             Log.i(TAG, "Permission granted")
-            initRecycerView()
-            displayHeadlines()
+//            viewModel.getHeadLines()
         }
     }
 
@@ -89,40 +114,35 @@ class MainActivity : AppCompatActivity() {
                     Log.i(TAG, "Permission has been denied by user")
                 } else {
                     Log.i(TAG, "Permission has been granted by user")
-                    initRecycerView()
-                    displayHeadlines()
+//                    viewModel.getHeadLines()
                 }
             }
         }
     }
 
-    private fun initRecycerView() {
+    private fun initRecyclerView() {
         linearLayoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = linearLayoutManager
         adapter = MyItemListAdapter(articleList)
         recyclerView.adapter = adapter
     }
 
-    private fun displayHeadlines() {
-        RetrofitHelper.searchTopHeadlines()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe ({
-                    result ->
-                    Log.d("Result", "There are ${result.articles.size} results")
+    fun initRecyclerView(arList: ArrayList<Model.Article>) {
+        linearLayoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = linearLayoutManager
+        adapter = MyItemListAdapter(articleList)
+        recyclerView.adapter = adapter
+    }
 
-                    for( a in result.articles ) {
-                        articleList.add(a)
-                    }
-
-                    adapter.notifyItemInserted(articleList.size)
-                }, { error ->
-                    error.printStackTrace()
-                })
+    fun updateArticleList(arList: ArrayList<Model.Article>) {
+        articleList.addAll(arList)
+        adapter.notifyItemInserted(arList.size)
     }
 }
 
 /*
+There's basically 20 things. Ive done 9.
+
 Create an Android News application using the following libraries:
 X Retrofit
 X RxKotlin/RxJava
@@ -135,25 +155,35 @@ X Gson
 - Espresso (UI Testing)
 - SQLite
 
-Architecture:  MVVM
+[DONE] Architecture:  MVVM
+
+https://medium.com/@manuelvicnt/rxjava-android-mvvm-app-structure-with-retrofit-a5605fa32c00
+Retrofit layer is like my RetrofitHelper interface.
+
+The API service calls the Retrofit Layer and processes the response, returning an
+Observable<ResponseObject>. It does the on subscribe and on error stuff. Seems to cover what the
+displayHeadlines() does.
 
 Due date:  01/11/2018 2:00 PM EST
 
 Requirements:
-The entire application should be written in Kotlin
+[DONE] The entire application should be written in Kotlin
 
-The application will allow a user fetch a list of news.
+[DONE] The application will allow a user fetch a list of news.
 
-Home screen:
+[DONE] Home screen:
 The first time it loads the home screen it should ask the user for Location permission
 (Runtime permission flow).
 
-Once the location is received, it would present a list of news and present them in a RecyclerView as
-well, including relevant news information.
+[DONE] Once the location is received, it would present a list of news and present them in a
+RecyclerView as well, including relevant news information.
 
 News Detail screen:
-It should display the details on the news and allow the user to store them in a local SQlite database.
-The ActionBar should have a favorite icon that changes color if the news being shown is a saved news article.
+It should display the details on the news
+and allow the user to store them in a local SQlite database.
+The ActionBar
+should have a favorite icon
+that changes color if the news being shown is a saved news article.
 
 Since we are senior developers and professional consultants, we value high quality in code, so make
 sure your code is presentable before any commit is made, and provide at least one Unit Test per
@@ -182,7 +212,8 @@ https://www.raywenderlich.com/132381/kotlin-for-android-an-introduction
 https://kotlinlang.org/docs/tutorials/kotlin-android.html
 
 Codelab:
-https://codelabs.developers.google.com/codelabs/build-your-first-android-app-kotlin/index.html?index=..%2F..%2Findex#0
+https://codelabs.developers.google.com/codelabs/build-your-first-android-app-kotlin/index.html?index
+=..%2F..%2Findex#0
 
 Book:
 https://antonioleiva.com/kotlin-android-developers-book/
