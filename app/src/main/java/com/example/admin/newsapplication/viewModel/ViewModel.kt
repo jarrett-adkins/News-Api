@@ -28,7 +28,7 @@ class ViewModel {
         return ( l > -1 )
     }
 }
-
+// make context a field injection with dagger
 /*
 Try these
 https://medium.com/@manuelvicnt/rxjava-android-mvvm-app-structure-with-retrofit-a5605fa32c00

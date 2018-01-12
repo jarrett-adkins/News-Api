@@ -129,8 +129,8 @@ X RxKotlin/RxJava
 X Kotlin
 X Gson
 - JaCoCo
-- Junit (Unit Testing)
-- Mockito (Unit Testing)
+X Junit (Unit Testing)
+X Mockito (Unit Testing)
 - Espresso (UI Testing)
 X SQLite
 
@@ -200,17 +200,7 @@ Will Hit Deadline:
 Issues: 
 Pending Items:
 Actions to be taken:
- */
 
-/*
-Show them this
-https://segunfamisa.com/posts/using-retrofit-on-android-with-kotlin
-and ask if the SearchRepository is a better practice.
-
-Do I display the full article on the news detail screen? The api on returns a description and a link.
- */
-
-/*
 JaCoCo
 Reporting code coverage. Making sure every line of code relevant to gusiness logic is tested.
 Viewmodel is interacting with dif layers, make sure each interaction is tested. Can use JUnit, ect.
@@ -222,5 +212,10 @@ https://medium.com/@manuelvicnt/rxjava-android-mvvm-app-structure-with-retrofit-
 Model to ViewModel, data comes from web and is mapped to pojo and sent to view model. With RxJava
 you can subscribe the viewmodel to the data. Viewmodel can be observable, extend base observable. Will
 bind and make the application react to a model change or view interaction.
+
+dagger
+http://www.andevcon.com/news/keddit-part-10-kotlin-dagger-2-dependency-injection
+https://android.jlelse.eu/keddit-part-10-kotlin-dagger-2-dependency-injection-a620052a7384
+https://antonioleiva.com/dagger-android-kotlin/
 
  */
