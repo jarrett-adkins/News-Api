@@ -20,7 +20,7 @@ class NewsDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_news_detail)
 
-        article = intent.getParcelableExtra<Model.Article>("article")
+        article = intent.getParcelableExtra("article")
 
         tvSourceID.text = article.source.id
         tvSourceName.text = article.source.name

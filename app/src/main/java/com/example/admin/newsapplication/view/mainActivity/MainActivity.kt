@@ -2,11 +2,11 @@ package com.example.admin.newsapplication.view.mainActivity
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import com.example.admin.newsapplication.R
@@ -122,8 +122,6 @@ class MainActivity : AppCompatActivity() {
 }
 
 /*
-There's basically 20 things. Ive done 14.
-
 Create an Android News application using the following libraries:
 X Retrofit
 X RxKotlin/RxJava

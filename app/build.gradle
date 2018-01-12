@@ -22,6 +22,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets {
+        test.java.srcDirs += 'src/test/kotlin'
+        androidTest.java.srcDirs += 'src/androidTest/kotlin'
+    }
 }
 
 dependencies {
@@ -54,6 +58,18 @@ dependencies {
     compile 'com.google.dagger:dagger:2.11'
     kapt 'com.google.dagger:dagger-compiler:2.11'
     provided 'org.glassfish:javax.annotation:10.0-b28'
+
+    //JUnit
+    testCompile 'junit:junit:4.12'
+
+    //espresso
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:3.0.1'
+    androidTestCompile 'com.android.support.test:runner:1.0.1'
+
+    //mockito
+    testCompile 'org.mockito:mockito-core:2.11.0'
+    testCompile "io.mockk:mockk:1.6.3"
+//    testCompile "com.nhaarman:mockito-kotlin:1.5.0"
 }
 repositories {
     mavenCentral()

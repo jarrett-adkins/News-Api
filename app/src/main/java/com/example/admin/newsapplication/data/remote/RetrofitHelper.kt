@@ -1,5 +1,6 @@
 package com.example.admin.newsapplication.data.remote
 
+import android.util.Log
 import com.example.admin.newsapplication.model.Model
 import com.example.admin.newsapplication.utils.Constants
 import com.example.admin.newsapplication.utils.Constants.BASE_URL
@@ -27,6 +28,7 @@ interface RetrofitHelper{
         }
 
         fun searchTopHeadlines(): io.reactivex.Observable<Model.Response> {
+            Log.d("sdsd", "sdsdsd")
             val retrofit = create()
             val apiService = retrofit.create(RetrofitHelper::class.java)
             return apiService.headlines()
